@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tetris MVP</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="card">
+    <h1 class="title">Tetris</h1>
+
+    <div class="game-area">
+      <div class="board-wrap">
+        <canvas id="board" width="300" height="600"></canvas>
+        <div id="game-over-overlay" class="overlay hidden">
+          <p class="overlay-title">Game Over</p>
+          <p class="overlay-score">Score: <span id="final-score">0</span></p>
+          <button id="restart-btn" class="btn">다시 시작</button>
+        </div>
+      </div>
+
+      <div class="side-panel">
+        <div class="panel-box">
+          <p class="panel-label">SCORE</p>
+          <p id="score" class="panel-value">0</p>
+        </div>
+
+        <div class="panel-box">
+          <p class="panel-label">LEVEL</p>
+          <p id="level" class="panel-value">1</p>
+        </div>
+
+        <div class="panel-box">
+          <p class="panel-label">조작법</p>
+          <ul class="controls-list">
+            <li>← → : 이동</li>
+            <li>↓ : 소프트 드롭</li>
+            <li>↑ / Space : 회전</li>
+          </ul>
+        </div>
+
+        <button id="start-btn" class="btn btn-accent">시작</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
