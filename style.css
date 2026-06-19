@@ -275,7 +275,7 @@ kbd {
 .leaderboard-table { width: 100%; border-collapse: collapse; font-size: 14px; }
 
 .leaderboard-table th {
-  text-align: left;
+  text-align: center;
   padding: 6px 8px;
   color: var(--color-muted);
   font-size: 11px;
