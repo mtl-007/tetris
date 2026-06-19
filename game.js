@@ -21,7 +21,7 @@ window.initGame = function initGame(name) {
   const COLS = 10;
   const ROWS = 20;
   const CELL = 30;
-  const BASE_DROP_INTERVAL  = 800;
+  const BASE_DROP_INTERVAL  = 650;
   const MIN_DROP_INTERVAL   = 100;
   const DROP_STEP_PER_LEVEL = 65;
   const LINES_PER_LEVEL     = 7;
@@ -337,6 +337,7 @@ function drawCell3D(c, color, px, py, size) {
     const cleared = await clearLines();
     if (cleared === 0) combo = 0;
     spawnPiece(cleared > 0);
+    render();   // 보드 갱신 후 즉시 렌더
     locking = false;
   }
   async function clearLines() {
@@ -374,9 +375,6 @@ function drawCell3D(c, color, px, py, size) {
     if (newLevel > level) {
       level = newLevel;
       levelEl.textContent = level;
-      // 레벨업 즉시 낙하 속도 반영
-      clearTimeout(dropTimeoutId);
-      scheduleDrop();
     }
 
     return fullRows.length;
@@ -398,11 +396,11 @@ function drawCell3D(c, color, px, py, size) {
       }
     }
   }
-  async function softDrop() { if (!move(0,1) && !locking) await lockPiece(); render(); }
+  async function softDrop() { if (!move(0,1) && !locking) await lockPiece(); if (!locking) render(); }
   async function hardDrop() {
     if (!running || locking) return;
     while (move(0, 1)) {}
-    await lockPiece(); render();
+    await lockPiece();
   }
 
   function gameOver() {
