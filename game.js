@@ -316,10 +316,10 @@ window.initGame = function initGame(name) {
     });
   }
 
-  function spawnPiece() {
+  function spawnPiece(keepNext = false) {
     if (!nextPiece) nextPiece = generatePieceData();
-    current   = { ...nextPiece, x: 3, y: 0 };
-    nextPiece = generatePieceData();
+    current = { ...nextPiece, x: 3, y: 0 };
+    if (!keepNext) nextPiece = generatePieceData();
     renderNext();
     if (hasCollision(current, 0, 0)) gameOver();
   }
@@ -336,15 +336,15 @@ window.initGame = function initGame(name) {
   }
   async function lockPiece() {
     absoluteCells(current).forEach(([x,y]) => { if (y >= 0) board[y][x] = current.color; });
-    await clearLines();
-    spawnPiece();
+    const cleared = await clearLines();
+    spawnPiece(cleared > 0);
   }
   async function clearLines() {
     const fullRows = [];
     for (let y = ROWS - 1; y >= 0; y--) {
       if (board[y].every(c => c !== null)) fullRows.push(y);
     }
-    if (fullRows.length === 0) return;
+    if (fullRows.length === 0) return 0;
 
     const wait = ms => new Promise(r => setTimeout(r, ms));
     for (let f = 0; f < 4; f++) {
@@ -364,6 +364,7 @@ window.initGame = function initGame(name) {
     });
     score += LINE_SCORES[fullRows.length] || fullRows.length * 100;
     scoreEl.textContent = score;
+    return fullRows.length;
   }
   function move(dx, dy) {
     if (!running || hasCollision(current,dx,dy)) return false;
