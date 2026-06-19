@@ -21,10 +21,9 @@ window.initGame = function initGame(name) {
   const COLS = 10;
   const ROWS = 20;
   const CELL = 30;
-  const BASE_DROP_INTERVAL  = 650;
-  const MIN_DROP_INTERVAL   = 100;
-  const DROP_STEP_PER_LEVEL = 85;
-  const LINES_PER_LEVEL      = 7;
+  const BASE_DROP_INTERVAL  = 800;
+  const MIN_DROP_INTERVAL   = 150;
+  const DROP_STEP_PER_LEVEL = 60;
   const LEVEL_UP_INTERVAL_MS = 20000;
   const LINE_SCORES = { 1: 100, 2: 300, 3: 500, 4: 800 };
 
@@ -381,11 +380,6 @@ function drawCell3D(c, color, px, py, size) {
     scoreEl.textContent = score;
 
     totalLines += fullRows.length;
-    const newLevel = Math.floor(totalLines / LINES_PER_LEVEL) + 1;
-    if (newLevel > level) {
-      level = newLevel;
-      levelEl.textContent = level;
-    }
 
     return fullRows.length;
   }
