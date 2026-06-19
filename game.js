@@ -370,6 +370,9 @@ function drawCell3D(c, color, px, py, size) {
     if (newLevel > level) {
       level = newLevel;
       levelEl.textContent = level;
+      // 레벨업 즉시 낙하 속도 반영
+      clearTimeout(dropTimeoutId);
+      scheduleDrop();
     }
 
     return fullRows.length;
