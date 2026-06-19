@@ -482,7 +482,7 @@ kbd {
 #btn-down {
   /* 위 열 전체 폭: 66+10+142+10+66 = 294 */
   width: 294px;
-  height: 54px;
+  height: 68px;
   font-size: 22px;
 }
 
