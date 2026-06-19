@@ -261,7 +261,7 @@ kbd {
   gap: 20px;
 }
 
-.modal-title { margin: 0; font-size: 20px; font-weight: 700; }
+.modal-title { margin: 0; font-size: 20px; font-weight: 700; text-align: center; }
 .leaderboard-content { min-height: 80px; }
 
 .loading-text {
@@ -283,16 +283,20 @@ kbd {
   border-bottom: 1px solid var(--color-border);
 }
 
+.leaderboard-table th:first-child { text-align: center; width: 40px; }
+.leaderboard-table th:nth-child(3),
+.leaderboard-table th:nth-child(4) { text-align: right; }
+
 .leaderboard-table td {
   padding: 10px;
   border-bottom: 1px solid var(--color-border);
 }
 
 .leaderboard-table tbody tr:last-child td { border-bottom: none; }
-.leaderboard-table .lb-rank { color: var(--color-muted); font-size: 13px; width: 32px; }
-.leaderboard-table .lb-name { word-break: break-all; }
-.leaderboard-table .lb-score { color: var(--color-accent); font-weight: 700; text-align: right; white-space: nowrap; }
-.leaderboard-table .lb-date { color: var(--color-muted); font-size: 11px; white-space: nowrap; text-align: right; }
+.leaderboard-table .lb-rank { color: var(--color-muted); font-size: 13px; width: 40px; text-align: center; }
+.leaderboard-table .lb-name { word-break: break-all; width: auto; }
+.leaderboard-table .lb-score { color: var(--color-accent); font-weight: 700; text-align: right; white-space: nowrap; width: 90px; }
+.leaderboard-table .lb-date { color: var(--color-muted); font-size: 11px; white-space: nowrap; text-align: right; width: 90px; }
 
 .leaderboard-table .rank-1 td, .leaderboard-table .rank-1 .lb-score { color: #ffd86e; }
 .leaderboard-table .rank-2 td, .leaderboard-table .rank-2 .lb-score { color: #c0c0c0; }
