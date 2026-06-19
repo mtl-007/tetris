@@ -251,7 +251,7 @@ window.initGame = function initGame(name) {
   });
 
   // ─── 게임 상태 ───
-  let board, current, nextPiece, score, level, totalLines, combo, dropTimeoutId, levelTimerId, running;
+  let board, current, nextPiece, score, level, totalLines, dropTimeoutId, levelTimerId, running;
   let canStart = true;
   let locking  = false;
 
@@ -272,7 +272,7 @@ window.initGame = function initGame(name) {
     }
     board     = createEmptyBoard();
     nextPiece = null;
-    score = 0; level = 1; totalLines = 0; combo = 0; locking = false;
+    score = 0; level = 1; totalLines = 0; locking = false;
     scoreEl.textContent = 0;
     levelEl.textContent = 1;
     overlayEl.classList.add('hidden');
@@ -344,7 +344,6 @@ function drawCell3D(c, color, px, py, size) {
     locking = true;
     absoluteCells(current).forEach(([x,y]) => { if (y >= 0) board[y][x] = current.color; });
     const cleared = await clearLines();
-    if (cleared === 0) combo = 0;
     spawnPiece(cleared > 0);
     render();   // 보드 갱신 후 즉시 렌더
     locking = false;
@@ -373,10 +372,7 @@ function drawCell3D(c, color, px, py, size) {
       board.unshift(Array(COLS).fill(null));
     });
 
-    combo++;
-    const base   = (LINE_SCORES[fullRows.length] || fullRows.length * 100) * level;
-    const bonus  = combo > 1 ? (combo - 1) * 50 * level : 0;
-    score += base + bonus;
+    score += LINE_SCORES[fullRows.length] || fullRows.length * 100;
     scoreEl.textContent = score;
 
     totalLines += fullRows.length;
