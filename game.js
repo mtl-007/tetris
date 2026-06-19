@@ -24,7 +24,8 @@ window.initGame = function initGame(name) {
   const BASE_DROP_INTERVAL  = 650;
   const MIN_DROP_INTERVAL   = 100;
   const DROP_STEP_PER_LEVEL = 85;
-  const LINES_PER_LEVEL     = 7;
+  const LINES_PER_LEVEL      = 7;
+  const LEVEL_UP_INTERVAL_MS = 20000;
   const LINE_SCORES = { 1: 100, 2: 300, 3: 500, 4: 800 };
 
   const SHAPES = {
@@ -251,7 +252,7 @@ window.initGame = function initGame(name) {
   });
 
   // ─── 게임 상태 ───
-  let board, current, nextPiece, score, level, totalLines, combo, dropTimeoutId, running;
+  let board, current, nextPiece, score, level, totalLines, combo, dropTimeoutId, levelTimerId, running;
   let canStart = true;
   let locking  = false;
 
@@ -267,6 +268,7 @@ window.initGame = function initGame(name) {
   function resetUI() {
     if (running) {
       clearTimeout(dropTimeoutId);
+      clearInterval(levelTimerId);
       running = false;
     }
     board     = createEmptyBoard();
@@ -284,6 +286,14 @@ window.initGame = function initGame(name) {
   }
   function scheduleDrop() {
     dropTimeoutId = setTimeout(async () => { await softDrop(); if (running) scheduleDrop(); }, getDropInterval());
+  }
+  function startLevelTimer() {
+    clearInterval(levelTimerId);
+    levelTimerId = setInterval(() => {
+      if (!running) return;
+      level++;
+      levelEl.textContent = level;
+    }, LEVEL_UP_INTERVAL_MS);
   }
 function drawCell3D(c, color, px, py, size) {
     const s = size - 1;
@@ -406,6 +416,7 @@ function drawCell3D(c, color, px, py, size) {
   function gameOver() {
     running = false;
     clearTimeout(dropTimeoutId);
+    clearInterval(levelTimerId);
     logoutBtn.disabled = false;
     nextCtx.clearRect(0, 0, nextCanvas.width, nextCanvas.height);
     savePlay(currentName, score).then(loadHighScore);
@@ -439,6 +450,7 @@ function drawCell3D(c, color, px, py, size) {
       running = true;
       spawnPiece(); render();
       scheduleDrop();
+      startLevelTimer();
     });
   }
 
