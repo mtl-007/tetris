@@ -24,7 +24,7 @@ window.initGame = function initGame(name) {
   const BASE_DROP_INTERVAL  = 800;
   const MIN_DROP_INTERVAL   = 150;
   const DROP_STEP_PER_LEVEL = 60;
-  const LEVEL_UP_INTERVAL_MS = 20000;
+  const LINES_PER_LEVEL     = 10;
   const LINE_SCORES = { 1: 100, 2: 300, 3: 500, 4: 800 };
 
   const SHAPES = {
@@ -246,13 +246,12 @@ window.initGame = function initGame(name) {
   logoutBtn.addEventListener('click', () => {
     if (running) return;
     clearTimeout(dropTimeoutId);
-    clearInterval(levelTimerId);
     running = false;
     showLogin();
   });
 
   // ─── 게임 상태 ───
-  let board, current, nextPiece, score, level, dropTimeoutId, levelTimerId, running;
+  let board, current, nextPiece, score, level, totalLines, combo, dropTimeoutId, running;
 
   function createEmptyBoard() {
     return Array.from({ length: ROWS }, () => Array(COLS).fill(null));
@@ -266,12 +265,11 @@ window.initGame = function initGame(name) {
   function resetUI() {
     if (running) {
       clearTimeout(dropTimeoutId);
-      clearInterval(levelTimerId);
       running = false;
     }
     board     = createEmptyBoard();
     nextPiece = null;
-    score     = 0; level = 1;
+    score = 0; level = 1; totalLines = 0; combo = 0;
     scoreEl.textContent = 0;
     levelEl.textContent = 1;
     overlayEl.classList.add('hidden');
@@ -285,11 +283,7 @@ window.initGame = function initGame(name) {
   function scheduleDrop() {
     dropTimeoutId = setTimeout(async () => { await softDrop(); if (running) scheduleDrop(); }, getDropInterval());
   }
-  function startLevelTimer() {
-    levelTimerId = setInterval(() => { level++; levelEl.textContent = level; }, LEVEL_UP_INTERVAL_MS);
-  }
-
-  function drawCell3D(c, color, px, py, size) {
+function drawCell3D(c, color, px, py, size) {
     const s = size - 1;
     const b = Math.max(2, Math.floor(size * 0.12));
     c.fillStyle = color;
@@ -337,6 +331,7 @@ window.initGame = function initGame(name) {
   async function lockPiece() {
     absoluteCells(current).forEach(([x,y]) => { if (y >= 0) board[y][x] = current.color; });
     const cleared = await clearLines();
+    if (cleared === 0) combo = 0;
     spawnPiece(cleared > 0);
   }
   async function clearLines() {
@@ -362,8 +357,20 @@ window.initGame = function initGame(name) {
       board.splice(y, 1);
       board.unshift(Array(COLS).fill(null));
     });
-    score += LINE_SCORES[fullRows.length] || fullRows.length * 100;
+
+    combo++;
+    const base   = (LINE_SCORES[fullRows.length] || fullRows.length * 100) * level;
+    const bonus  = combo > 1 ? (combo - 1) * 50 * level : 0;
+    score += base + bonus;
     scoreEl.textContent = score;
+
+    totalLines += fullRows.length;
+    const newLevel = Math.floor(totalLines / LINES_PER_LEVEL) + 1;
+    if (newLevel > level) {
+      level = newLevel;
+      levelEl.textContent = level;
+    }
+
     return fullRows.length;
   }
   function move(dx, dy) {
@@ -392,7 +399,7 @@ window.initGame = function initGame(name) {
 
   function gameOver() {
     running = false;
-    clearTimeout(dropTimeoutId); clearInterval(levelTimerId);
+    clearTimeout(dropTimeoutId);
     logoutBtn.disabled = false;
     nextCtx.clearRect(0, 0, nextCanvas.width, nextCanvas.height);
     showDanceOverlay('GAME OVER!', '#ff6e6e', async () => {
@@ -421,7 +428,7 @@ window.initGame = function initGame(name) {
     showDanceOverlay('GAME START!', '#6e93ff', () => {
       running = true;
       spawnPiece(); render();
-      scheduleDrop(); startLevelTimer();
+      scheduleDrop();
     });
   }
 
