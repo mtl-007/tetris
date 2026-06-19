@@ -23,7 +23,7 @@ window.initGame = function initGame(name) {
   const CELL = 30;
   const BASE_DROP_INTERVAL  = 650;
   const MIN_DROP_INTERVAL   = 100;
-  const DROP_STEP_PER_LEVEL = 65;
+  const DROP_STEP_PER_LEVEL = 85;
   const LINES_PER_LEVEL     = 7;
   const LINE_SCORES = { 1: 100, 2: 300, 3: 500, 4: 800 };
 
