@@ -23,7 +23,7 @@ window.initGame = function initGame(name) {
   const CELL = 30;
   const BASE_DROP_INTERVAL  = 600;
   const MIN_DROP_INTERVAL   = 100;
-  const LEVEL_STEPS = [60, 60, 60, 50, 35, 30, 25, 20, 15]; // 레벨별 감소폭(ms)
+  const LEVEL_STEPS = [60, 60, 60, 55, 45, 40, 35, 30, 25]; // 레벨별 감소폭(ms)
   const LEVEL_UP_INTERVAL_MS = 20000;
   const LINE_SCORES = { 1: 100, 2: 300, 3: 500, 4: 800 };
 
