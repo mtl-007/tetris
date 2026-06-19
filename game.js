@@ -402,11 +402,11 @@ function drawCell3D(c, color, px, py, size) {
     clearTimeout(dropTimeoutId);
     logoutBtn.disabled = false;
     nextCtx.clearRect(0, 0, nextCanvas.width, nextCanvas.height);
-    showDanceOverlay('GAME OVER!', '#ff6e6e', async () => {
+    // 애니메이션 대기 없이 즉시 저장 (화면 이탈/네트워크 지연 방어)
+    savePlay(currentName, score).then(loadHighScore);
+    showDanceOverlay('GAME OVER!', '#ff6e6e', () => {
       finalScoreEl.textContent = score;
       overlayEl.classList.remove('hidden');
-      await savePlay(currentName, score);
-      loadHighScore();
     });
   }
 

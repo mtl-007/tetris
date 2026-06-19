@@ -2,10 +2,16 @@
 // RLS: SELECT / INSERT 모두 공개 허용 (인증 불필요)
 
 async function savePlay(playerName, score) {
-  const { error } = await supabaseClient
-    .from('tetris_plays')
-    .insert({ player_name: playerName, score });
-  return !error;
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const { error } = await supabaseClient
+      .from('tetris_plays')
+      .insert({ player_name: playerName, score });
+    if (!error) return true;
+    console.warn(`savePlay 실패 (${attempt + 1}회):`, error.message);
+    if (attempt < 2) await new Promise(r => setTimeout(r, 1000));
+  }
+  console.error('savePlay: 3회 시도 후 저장 실패');
+  return false;
 }
 
 async function fetchHighScore() {
