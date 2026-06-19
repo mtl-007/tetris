@@ -24,7 +24,7 @@ window.initGame = function initGame(name) {
   const BASE_DROP_INTERVAL  = 800;
   const MIN_DROP_INTERVAL   = 100;
   const DROP_STEP_PER_LEVEL = 65;
-  const LINES_PER_LEVEL     = 10;
+  const LINES_PER_LEVEL     = 7;
   const LINE_SCORES = { 1: 100, 2: 300, 3: 500, 4: 800 };
 
   const SHAPES = {
