@@ -23,7 +23,7 @@ window.initGame = function initGame(name) {
   const CELL = 30;
   const BASE_DROP_INTERVAL  = 800;
   const MIN_DROP_INTERVAL   = 100;
-  const DROP_STEP_PER_LEVEL = 50;
+  const DROP_STEP_PER_LEVEL = 65;
   const LINES_PER_LEVEL     = 10;
   const LINE_SCORES = { 1: 100, 2: 300, 3: 500, 4: 800 };
 
@@ -253,6 +253,7 @@ window.initGame = function initGame(name) {
   // ─── 게임 상태 ───
   let board, current, nextPiece, score, level, totalLines, combo, dropTimeoutId, running;
   let canStart = true;
+  let locking  = false;
 
   function createEmptyBoard() {
     return Array.from({ length: ROWS }, () => Array(COLS).fill(null));
@@ -270,7 +271,7 @@ window.initGame = function initGame(name) {
     }
     board     = createEmptyBoard();
     nextPiece = null;
-    score = 0; level = 1; totalLines = 0; combo = 0;
+    score = 0; level = 1; totalLines = 0; combo = 0; locking = false;
     scoreEl.textContent = 0;
     levelEl.textContent = 1;
     overlayEl.classList.add('hidden');
@@ -330,10 +331,13 @@ function drawCell3D(c, color, px, py, size) {
     });
   }
   async function lockPiece() {
+    if (locking) return;
+    locking = true;
     absoluteCells(current).forEach(([x,y]) => { if (y >= 0) board[y][x] = current.color; });
     const cleared = await clearLines();
     if (cleared === 0) combo = 0;
     spawnPiece(cleared > 0);
+    locking = false;
   }
   async function clearLines() {
     const fullRows = [];
@@ -394,9 +398,9 @@ function drawCell3D(c, color, px, py, size) {
       }
     }
   }
-  async function softDrop() { if (!move(0,1)) await lockPiece(); render(); }
+  async function softDrop() { if (!move(0,1) && !locking) await lockPiece(); render(); }
   async function hardDrop() {
-    if (!running) return;
+    if (!running || locking) return;
     while (move(0, 1)) {}
     await lockPiece(); render();
   }
