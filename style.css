@@ -285,7 +285,7 @@ kbd {
 }
 
 .leaderboard-table th:first-child { text-align: center; width: 36px; }
-.leaderboard-table th:nth-child(2) { width: 80px; }
+.leaderboard-table th:nth-child(2) { width: 60px; }
 .leaderboard-table th:nth-child(3),
 .leaderboard-table th:nth-child(4) { text-align: right; }
 
@@ -296,7 +296,7 @@ kbd {
 
 .leaderboard-table tbody tr:last-child td { border-bottom: none; }
 .leaderboard-table .lb-rank { color: var(--color-muted); font-size: 13px; width: 36px; text-align: center; white-space: nowrap; }
-.leaderboard-table .lb-name { word-break: break-word; max-width: 80px; overflow: hidden; text-overflow: ellipsis; }
+.leaderboard-table .lb-name { word-break: break-word; max-width: 60px; overflow: hidden; text-overflow: ellipsis; }
 .leaderboard-table .lb-score { color: var(--color-accent); font-weight: 700; text-align: right; white-space: nowrap; width: 90px; }
 .leaderboard-table .lb-date { color: var(--color-muted); font-size: 11px; white-space: nowrap; text-align: right; width: 90px; }
 
