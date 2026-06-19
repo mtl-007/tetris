@@ -252,6 +252,7 @@ window.initGame = function initGame(name) {
 
   // ─── 게임 상태 ───
   let board, current, nextPiece, score, level, totalLines, combo, dropTimeoutId, running;
+  let canStart = true;
 
   function createEmptyBoard() {
     return Array.from({ length: ROWS }, () => Array(COLS).fill(null));
@@ -406,6 +407,7 @@ function drawCell3D(c, color, px, py, size) {
     showDanceOverlay('GAME OVER!', '#ff6e6e', () => {
       finalScoreEl.textContent = score;
       overlayEl.classList.remove('hidden');
+      canStart = true;
       startBtn.disabled = false;
     });
   }
@@ -422,7 +424,8 @@ function drawCell3D(c, color, px, py, size) {
   }
 
   function startGame() {
-    if (startBtn.disabled) return;
+    if (!canStart) return;
+    canStart = false;
     startBtn.disabled = true;
     logoutBtn.disabled = true;
     resetUI();
