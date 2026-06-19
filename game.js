@@ -366,11 +366,10 @@ function drawCell3D(c, color, px, py, size) {
       await wait(35);
     }
 
+    // splice를 먼저 모두 실행한 뒤 unshift — 교대 실행 시 인덱스가 밀려 잘못된 행이 제거되는 버그 방지
     fullRows.sort((a, b) => b - a);
-    fullRows.forEach(y => {
-      board.splice(y, 1);
-      board.unshift(Array(COLS).fill(null));
-    });
+    fullRows.forEach(y => board.splice(y, 1));
+    for (let i = 0; i < fullRows.length; i++) board.unshift(Array(COLS).fill(null));
 
     score += LINE_SCORES[fullRows.length] || fullRows.length * 100;
     scoreEl.textContent = score;
