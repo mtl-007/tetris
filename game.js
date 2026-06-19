@@ -422,6 +422,7 @@ function drawCell3D(c, color, px, py, size) {
   }
 
   function startGame() {
+    if (running) return;
     resetUI();
     startBtn.disabled = true;
     logoutBtn.disabled = true;
