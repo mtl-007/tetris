@@ -483,6 +483,7 @@ kbd {
   width: 142px;
   height: 54px;
   font-size: 22px;
+  margin-top: 12px;
 }
 
 /* ─── 반응형 ─── */
