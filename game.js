@@ -175,6 +175,7 @@ window.initGame = function initGame(name) {
   }
 
   // ─── HIGH SCORE / LEADERBOARD ───
+  const TOP3_MEDALS = ['🥇', '🥈', '🥉'];
   const TOP3_COLORS = ['#ffd86e', '#c0c0c0', '#cd7f32'];
 
   function renderTop3(list) {
@@ -184,7 +185,7 @@ window.initGame = function initGame(name) {
     }
     top3ListEl.innerHTML = list.map((p, i) => `
       <div class="top3-item">
-        <span class="top3-rank" style="color:${TOP3_COLORS[i]}">${i + 1}</span>
+        <span class="top3-rank">${TOP3_MEDALS[i]}</span>
         <span class="top3-name">${escapeHtml(p.player_name)}</span>
         <span class="top3-score" style="color:${TOP3_COLORS[i]}">${p.score.toLocaleString()}</span>
       </div>`).join('');
