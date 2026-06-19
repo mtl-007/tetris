@@ -461,20 +461,24 @@ window.initGame = function initGame(name) {
   addTouchBtn('btn-left',  () => move(-1, 0));
   addTouchBtn('btn-right', () => move( 1, 0));
 
-  // 아래 버튼: 한 번에 바닥으로 하드 드롭
-  const btnDown = document.getElementById('btn-down');
-  btnDown.addEventListener('touchstart', e => {
-    e.preventDefault(); hardDrop();
-  }, { passive: false });
-  btnDown.addEventListener('click', () => hardDrop());
+  // 아래/회전 버튼: touchstart + mousedown만 사용 (click은 touchstart 후 중복 발화)
+  // 200ms 쿨다운으로 가볍게 닿았을 때 오작동 방지
+  function addTapBtn(id, action) {
+    const btn = document.getElementById(id);
+    let lastTime = 0;
+    const handle = e => {
+      e.preventDefault();
+      const now = Date.now();
+      if (now - lastTime < 200) return;
+      lastTime = now;
+      action();
+    };
+    btn.addEventListener('touchstart', handle, { passive: false });
+    btn.addEventListener('mousedown',  handle);
+  }
 
-  const btnRotate = document.getElementById('btn-rotate');
-  btnRotate.addEventListener('touchstart', e => {
-    e.preventDefault(); if (!running) return; rotate(); render();
-  }, { passive: false });
-  btnRotate.addEventListener('click', () => {
-    if (!running) return; rotate(); render();
-  });
+  addTapBtn('btn-down',   () => { hardDrop(); });
+  addTapBtn('btn-rotate', () => { if (!running) return; rotate(); render(); });
 
   // 최초 진입 시 초기화
   resetUI();
