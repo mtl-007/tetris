@@ -19,6 +19,16 @@ async function fetchHighScore() {
   return data;
 }
 
+async function fetchTop3() {
+  const { data, error } = await supabaseClient
+    .from('tetris_plays')
+    .select('player_name, score')
+    .order('score', { ascending: false })
+    .limit(3);
+  if (error) return [];
+  return data ?? [];
+}
+
 async function fetchLeaderboard() {
   const { data, error } = await supabaseClient
     .from('tetris_plays')

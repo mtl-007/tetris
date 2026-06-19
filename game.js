@@ -50,8 +50,7 @@ window.initGame = function initGame(name) {
   const overlayEl          = document.getElementById('game-over-overlay');
   const startBtn           = document.getElementById('start-btn');
   const restartBtn         = document.getElementById('restart-btn');
-  const highScoreValueEl   = document.getElementById('high-score-value');
-  const highScoreNameEl    = document.getElementById('high-score-name');
+  const top3ListEl         = document.getElementById('top3-list');
   const leaderboardModal   = document.getElementById('leaderboard-modal');
   const leaderboardContent = document.getElementById('leaderboard-content');
   const closeLeaderboardBtn = document.getElementById('close-leaderboard-btn');
@@ -176,18 +175,23 @@ window.initGame = function initGame(name) {
   }
 
   // ─── HIGH SCORE / LEADERBOARD ───
-  function renderHighScore(data) {
-    if (data?.score != null) {
-      highScoreValueEl.textContent = data.score.toLocaleString();
-      highScoreNameEl.textContent  = data.player_name;
-    } else {
-      highScoreValueEl.textContent = '-';
-      highScoreNameEl.textContent  = '기록 없음';
+  const TOP3_COLORS = ['#ffd86e', '#c0c0c0', '#cd7f32'];
+
+  function renderTop3(list) {
+    if (!Array.isArray(list) || list.length === 0) {
+      top3ListEl.innerHTML = '<p class="top3-empty">기록 없음</p>';
+      return;
     }
+    top3ListEl.innerHTML = list.map((p, i) => `
+      <div class="top3-item">
+        <span class="top3-rank" style="color:${TOP3_COLORS[i]}">${i + 1}</span>
+        <span class="top3-name">${escapeHtml(p.player_name)}</span>
+        <span class="top3-score" style="color:${TOP3_COLORS[i]}">${p.score.toLocaleString()}</span>
+      </div>`).join('');
   }
 
   async function loadHighScore() {
-    renderHighScore(await fetchHighScore());
+    renderTop3(await fetchTop3());
   }
 
   function escapeHtml(str) {

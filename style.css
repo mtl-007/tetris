@@ -138,6 +138,47 @@ body {
   color: var(--color-muted);
 }
 
+.top3-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.top3-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+}
+
+.top3-rank {
+  font-weight: 700;
+  font-size: 13px;
+  width: 14px;
+  flex-shrink: 0;
+}
+
+.top3-name {
+  flex: 1;
+  color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.top3-score {
+  font-weight: 700;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.top3-empty {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
 .panel-label-row {
   display: flex;
   align-items: center;
