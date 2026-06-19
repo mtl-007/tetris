@@ -3,48 +3,113 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tetris MVP</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>TETRIS</title>
+  <link rel="stylesheet" href="style.css?v=35" />
 </head>
 <body>
-  <div class="card">
-    <h1 class="title">Tetris</h1>
 
-    <div class="game-area">
-      <div class="board-wrap">
-        <canvas id="board" width="300" height="600"></canvas>
-        <div id="game-over-overlay" class="overlay hidden">
-          <p class="overlay-title">Game Over</p>
-          <p class="overlay-score">Score: <span id="final-score">0</span></p>
-          <button id="restart-btn" class="btn">다시 시작</button>
+  <!-- 리더보드 모달 -->
+  <div id="leaderboard-modal" class="modal-overlay hidden">
+    <div class="modal-card">
+      <h2 class="modal-title">랭킹</h2>
+      <div id="leaderboard-content" class="leaderboard-content"></div>
+      <button id="close-leaderboard-btn" class="btn">닫기</button>
+    </div>
+  </div>
+
+  <!-- 이름 입력 오버레이 -->
+  <div class="login-overlay" id="login-overlay">
+    <div class="login-card">
+      <h1 class="login-title">TETRIS</h1>
+      <p class="login-sub">이름을 입력하고 게임을 시작하세요</p>
+      <p class="login-notice">※ 입력한 이름은 랭킹 표시 용도로만 사용됩니다</p>
+      <input
+        class="email-input"
+        type="text"
+        id="email-input"
+        placeholder="이름"
+        autocomplete="nickname"
+        maxlength="20"
+      />
+      <p class="email-error" id="email-error" hidden></p>
+      <button class="btn btn-accent btn-full" id="btn-start" type="button">시작하기</button>
+    </div>
+  </div>
+
+  <!-- 게임 화면 -->
+  <div id="game-wrapper" class="game-wrapper" hidden>
+    <div class="card">
+      <h1 class="title">TETRIS</h1>
+
+      <div class="game-area">
+        <div class="board-wrap">
+          <canvas id="board" width="300" height="600"></canvas>
+          <canvas id="dance-canvas" width="300" height="600" hidden></canvas>
+          <div id="game-over-overlay" class="overlay hidden">
+            <p class="overlay-title">Game Over</p>
+            <p class="overlay-score">Score: <span id="final-score">0</span></p>
+            <button id="restart-btn" class="btn">다시 시작</button>
+          </div>
+        </div>
+
+        <div class="side-panel">
+          <div class="panel-box">
+            <p class="panel-label">플레이어</p>
+            <p id="player-email" class="player-email">-</p>
+          </div>
+
+          <div class="panel-box">
+            <p class="panel-label">점수</p>
+            <p id="score" class="panel-value">0</p>
+          </div>
+
+          <div class="panel-box">
+            <p class="panel-label">LEVEL</p>
+            <p id="level" class="panel-value">1</p>
+          </div>
+
+          <div class="panel-box">
+            <p class="panel-label">NEXT</p>
+            <canvas id="next-canvas" class="next-canvas" width="96" height="72"></canvas>
+          </div>
+
+          <div class="panel-box">
+            <p class="panel-label">최고점수</p>
+            <p id="high-score-value" class="panel-value">-</p>
+            <p id="high-score-name" class="panel-sub">기록 없음</p>
+          </div>
         </div>
       </div>
 
-      <div class="side-panel">
-        <div class="panel-box">
-          <p class="panel-label">SCORE</p>
-          <p id="score" class="panel-value">0</p>
-        </div>
-
-        <div class="panel-box">
-          <p class="panel-label">LEVEL</p>
-          <p id="level" class="panel-value">1</p>
-        </div>
-
-        <div class="panel-box">
-          <p class="panel-label">조작법</p>
-          <ul class="controls-list">
-            <li>← → : 이동</li>
-            <li>↓ : 소프트 드롭</li>
-            <li>↑ / Space : 회전</li>
-          </ul>
-        </div>
-
+      <div class="card-btns">
+        <button id="logout-btn" class="btn" type="button">나가기</button>
+        <button id="leaderboard-btn" class="btn">랭킹</button>
         <button id="start-btn" class="btn btn-accent">시작</button>
+      </div>
+    </div>
+
+    <div class="controls-bar">
+      <span class="ctrl-item"><kbd>← →</kbd> 이동</span>
+      <span class="ctrl-item"><kbd>↓</kbd> 소프트 드롭</span>
+      <span class="ctrl-item"><kbd>↑</kbd> / <kbd>Space</kbd> 회전</span>
+    </div>
+
+    <div class="mobile-controls">
+      <div class="mobile-row">
+        <button class="mobile-btn" id="btn-left">◀</button>
+        <button class="mobile-btn" id="btn-rotate">↺</button>
+        <button class="mobile-btn" id="btn-right">▶</button>
+      </div>
+      <div class="mobile-row">
+        <button class="mobile-btn" id="btn-down">▼</button>
       </div>
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+  <script src="config.js?v=35" defer></script>
+  <script src="db.js?v=35" defer></script>
+  <script src="auth.js?v=35" defer></script>
+  <script src="game.js?v=35" defer></script>
 </body>
 </html>
