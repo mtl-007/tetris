@@ -422,10 +422,10 @@ function drawCell3D(c, color, px, py, size) {
   }
 
   function startGame() {
-    if (running) return;
-    resetUI();
+    if (startBtn.disabled) return;
     startBtn.disabled = true;
     logoutBtn.disabled = true;
+    resetUI();
     playerEmailEl.textContent = currentName;
     showDanceOverlay('GAME START!', '#6e93ff', () => {
       running = true;
