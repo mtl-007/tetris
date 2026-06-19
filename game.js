@@ -23,7 +23,7 @@ window.initGame = function initGame(name) {
   const CELL = 30;
   const BASE_DROP_INTERVAL  = 500;
   const MIN_DROP_INTERVAL   = 100;
-  const DROP_STEP_PER_LEVEL = 60;
+  const LEVEL_STEPS = [60, 60, 60, 60, 40, 40, 25, 25, 20]; // 레벨별 감소폭(ms)
   const LEVEL_UP_INTERVAL_MS = 20000;
   const LINE_SCORES = { 1: 100, 2: 300, 3: 500, 4: 800 };
 
@@ -281,7 +281,9 @@ window.initGame = function initGame(name) {
   }
 
   function getDropInterval() {
-    return Math.max(MIN_DROP_INTERVAL, BASE_DROP_INTERVAL - (level - 1) * DROP_STEP_PER_LEVEL);
+    let ms = BASE_DROP_INTERVAL;
+    for (let i = 0; i < level - 1; i++) ms -= (LEVEL_STEPS[i] ?? 20);
+    return Math.max(MIN_DROP_INTERVAL, ms);
   }
   function scheduleDrop() {
     dropTimeoutId = setTimeout(async () => { await softDrop(); if (running) scheduleDrop(); }, getDropInterval());
