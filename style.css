@@ -248,6 +248,11 @@ body {
 }
 
 .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-accent:disabled {
+  background: var(--color-border);
+  border-color: var(--color-border);
+  color: var(--color-muted);
+}
 
 /* ─── 컨트롤 바 ─── */
 .controls-bar {
