@@ -466,16 +466,18 @@ function drawCell3D(c, color, px, py, size) {
     const start = e => {
       e.preventDefault();
       if (!running) return;
+      if (interval) return; // 중복 시작 방지
       action();
       render();
       interval = setInterval(() => { if (running) { action(); render(); } }, 120);
     };
     const stop = () => { clearInterval(interval); interval = null; };
-    btn.addEventListener('touchstart', start, { passive: false });
-    btn.addEventListener('touchend',   stop);
-    btn.addEventListener('mousedown',  start);
-    btn.addEventListener('mouseup',    stop);
-    btn.addEventListener('mouseleave', stop);
+    btn.addEventListener('touchstart',  start,  { passive: false });
+    btn.addEventListener('touchend',    stop);
+    btn.addEventListener('touchcancel', stop);   // 터치 취소 시에도 interval 정지
+    btn.addEventListener('mousedown',   start);
+    btn.addEventListener('mouseup',     stop);
+    btn.addEventListener('mouseleave',  stop);
   }
 
   addTouchBtn('btn-left',  () => move(-1, 0));
